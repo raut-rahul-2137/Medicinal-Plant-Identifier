@@ -8,10 +8,14 @@ import os
 app = Flask(__name__)
 
 # Load the model
-model = tf.keras.models.load_model('medicinal_plant_classifier.h5')
+try:
+    model = tf.keras.models.load_model('medicinal_plant_classifier.h5')
+except Exception as e:
+    print(f"Error loading model: {str(e)}")
+    model = None
 
 # Define class names (you should replace these with your actual class names)
-class_names = ['Aloevera', 'Amla', 'Amruta_Balli', 'Arali', 'Ashoka', 'Ashwagandha', 'Avacado', 'Bamboo', 'Basale', 'Betel', 'Betel_Nut', 'Brahmi', 'Castor', 'Curry_Leaf', 'Doddapatre', 'Ekka', 'Ganike', 'Gauva', 'Geranium', 'Henna', 'Hibiscus', 'Honge', 'Insulin', 'Jasmine', 'Lemon', 'Lemon_grass', 'Mango', 'Mint', 'Nagadali', 'Neem', 'Nithyapushpa', 'Nooni', 'Pappaya', 'Pepper', 'Pomegranate', 'Raktachandini', 'Rose', 'Sapota', 'Tulasi', 'Wood_sorel', 'labels'] # Replace with your actual class names
+class_names = ['Class1', 'Class2', 'Class3']  # Replace with your actual class names
 
 def preprocess_image(image):
     # Resize image to match model's expected sizing
@@ -27,6 +31,12 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    if model is None:
+        return jsonify({
+            'success': False,
+            'error': 'Model not loaded properly'
+        })
+        
     try:
         # Get the image file from the request
         file = request.files['file']
@@ -50,6 +60,9 @@ def predict():
             'success': False,
             'error': str(e)
         })
+
+# This is important for Vercel
+app = app
 
 if __name__ == '__main__':
     app.run(debug=True) 
