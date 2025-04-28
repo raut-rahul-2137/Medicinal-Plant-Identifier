@@ -11,7 +11,7 @@ app = Flask(__name__)
 model = tf.keras.models.load_model('medicinal_plant_classifier.h5')
 
 # Define class names (you should replace these with your actual class names)
-class_names = ['Class1', 'Class2', 'Class3']  # Replace with your actual class names
+class_names = ['Aloevera', 'Amla', 'Amruta_Balli', 'Arali', 'Ashoka', 'Ashwagandha', 'Avacado', 'Bamboo', 'Basale', 'Betel', 'Betel_Nut', 'Brahmi', 'Castor', 'Curry_Leaf', 'Doddapatre', 'Ekka', 'Ganike', 'Gauva', 'Geranium', 'Henna', 'Hibiscus', 'Honge', 'Insulin', 'Jasmine', 'Lemon', 'Lemon_grass', 'Mango', 'Mint', 'Nagadali', 'Neem', 'Nithyapushpa', 'Nooni', 'Pappaya', 'Pepper', 'Pomegranate', 'Raktachandini', 'Rose', 'Sapota', 'Tulasi', 'Wood_sorel', 'labels'] # Replace with your actual class names
 
 def preprocess_image(image):
     # Resize image to match model's expected sizing
