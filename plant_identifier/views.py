@@ -1,3 +1,4 @@
+import os
 import tensorflow as tf
 import numpy as np
 from PIL import Image
@@ -7,6 +8,7 @@ import tempfile
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 
 # Model URL - Replace this with your actual model URL after uploading
 MODEL_URL = "YOUR_MODEL_URL_HERE"
@@ -37,7 +39,7 @@ def preprocess_image(image):
     img_array = tf.expand_dims(img_array, 0)
     return img_array
 
-def home(request):
+def serve_react(request):
     return render(request, 'index.html')
 
 @csrf_exempt

@@ -7,19 +7,26 @@
             "config": {
                 "maxLambdaSize": "50mb",
                 "runtime": "python3.12",
-                "includeFiles": ["templates/**"],
-                "buildCommand": "chmod +x vercel-build.sh && ./vercel-build.sh"
+                "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput && cd frontend && npm install && npm run build"
             }
         }
     ],
     "routes": [
         {
-            "src": "/(.*)",
+            "src": "/static/(.*)",
+            "dest": "/static/$1"
+        },
+        {
+            "src": "/api/(.*)",
             "dest": "app.py"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/frontend/build/$1"
         }
     ],
     "env": {
         "PYTHONPATH": ".",
-        "PYTHONUNBUFFERED": "1"
+        "DJANGO_SETTINGS_MODULE": "medicinal_plant.settings"
     }
 } 
