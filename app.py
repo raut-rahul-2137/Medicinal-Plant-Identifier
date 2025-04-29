@@ -4,12 +4,25 @@ import numpy as np
 from PIL import Image
 import io
 import os
+import requests
+import tempfile
 
 app = Flask(__name__)
 
+# Model URL - Replace this with your actual model URL after uploading
+MODEL_URL = "YOUR_MODEL_URL_HERE"  # You'll need to replace this with your actual model URL
+
 # Load the model
 try:
-    model = tf.keras.models.load_model('medicinal_plant_classifier.h5')
+    # Download model to temporary file
+    response = requests.get(MODEL_URL)
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.h5') as tmp_file:
+        tmp_file.write(response.content)
+        tmp_file.flush()
+        # Load model from temporary file
+        model = tf.keras.models.load_model(tmp_file.name)
+    # Clean up temporary file
+    os.unlink(tmp_file.name)
 except Exception as e:
     print(f"Error loading model: {str(e)}")
     model = None
